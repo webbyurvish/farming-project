@@ -7,27 +7,27 @@ import Footer from "./Footer";
 // import Showcase from "./Showcase";
 
 export default function Layout({ title, keywords, description, children }) {
-    //   const router = useRouter();
+  //   const router = useRouter();
 
-    return (
-        <div>
-            <Head>
-                <title>{title}</title>
-                <meta name="description" content={description} />
-                <meta name="keywords" content={keywords} />
-            </Head>
-            <Header />
+  return (
+    <div>
+      <Head>
+        <title>{title}</title>
+        <meta name="description" content={description} />
+        <meta name="keywords" content={keywords} />
+      </Head>
+      <Header />
 
-            {/* {router.pathname === "/" && <Showcase />} */}
-            <div>{children}</div>
+      {/* {router.pathname === "/" && <Showcase />} */}
+      <div>{children}</div>
 
-            <Footer />
-        </div>
-    );
+      <Footer />
+    </div>
+  );
 }
 
 Layout.defaultProps = {
-    title: "DJ Events | Find the hottest parties",
-    description: "Find the latest DJ and other musical events",
-    keywords: "music, dj, edm, events",
+  title: "DJ Events | Find the hottest parties",
+  description: "Find the latest DJ and other musical events",
+  keywords: "music, dj, edm, events",
 };
