@@ -1,13 +1,13 @@
 import React from "react";
-// import { useRouter } from "next/router";
+import { useRouter } from "next/router";
 import Head from "next/head";
-// import styles from "@/styles/Layout.module.css";
+import styles from "@/styles/Layout.module.css";
 import { Header } from "./Header";
 import Footer from "./Footer";
-// import Showcase from "./Showcase";
+import Testimonial from "./Testimonial";
 
 export default function Layout({ title, keywords, description, children }) {
-  //   const router = useRouter();
+  const router = useRouter();
 
   return (
     <div>
@@ -18,8 +18,9 @@ export default function Layout({ title, keywords, description, children }) {
       </Head>
       <Header />
 
-      {/* {router.pathname === "/" && <Showcase />} */}
-      <div>{children}</div>
+      <div className="mt-[5rem]">{children}</div>
+
+      {router.pathname === "/" && <Testimonial />}
 
       <Footer />
     </div>
