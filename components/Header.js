@@ -167,6 +167,12 @@ export function Header() {
             <li className="ml-10 text-sm uppercase hover:border-b">
               <Link href="/#projects">Find a solution</Link>
             </li>
+            <li className="ml-10 text-sm uppercase hover:border-b">
+              <Link href="/login">Login</Link>
+            </li>
+            <li className="ml-10 text-sm uppercase hover:border-b">
+              <Link href="/signup">Sign Up</Link>
+            </li>
             {/* <li className="ml-10 text-sm uppercase hover:border-b">
               <Link href="/resume">Resume</Link>
             </li>
