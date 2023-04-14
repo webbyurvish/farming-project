@@ -90,6 +90,7 @@ import React, { useState, useEffect } from "react";
 import { AiOutlineClose, AiOutlineMail, AiOutlineMenu } from "react-icons/ai";
 import { FaGithub, FaLinkedinIn } from "react-icons/fa";
 import { BsFillPersonLinesFill } from "react-icons/bs";
+import navimage from "../public/images/navbarlogopng.png"
 // import { useRouter } from 'next/router';
 // import NavLogo from "../public/assets/navLogo.png";
 
@@ -143,7 +144,7 @@ export function Header() {
       <div className="flex justify-between items-center w-full h-full px-2 2xl:px-16">
         <Link href="/">
           {/* <a> */}
-          Nav
+          <Image src={navimage} height={50} width={50} />
           {/* <Image
               src={NavLogo}
               alt="/"
