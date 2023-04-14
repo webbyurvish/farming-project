@@ -1,6 +1,7 @@
-import React from "react";
-import { useRef } from "react";
+import React, { useRef } from "react";
+import axios from "axios";
 import { useRouter } from "next/router";
+import Cookies from "js-cookie";
 
 export default function Login() {
   let emailInputref = useRef();
@@ -8,44 +9,112 @@ export default function Login() {
 
   const router = useRouter();
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    login();
-  };
+  // const handleSubmit = (e) => {
+  //   e.preventDefault();
+  //   login();
+  // };
 
-  const login = async () => {
+  // async function login() {
+  //   const response = await fetch("https://localhost:7295/api/books");
+  //   const data = await response.json();
+
+  //   console.log(data);
+  // }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     const data = {
       email: emailInputref.current.value,
       password: passwordInputRef.current.value,
     };
-    const response = await fetch("https://localhost:7295/api/account/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    });
-
-    console.log(response);
-
-    const data1 = await response.text;
-    console.log(data1);
-
-    // console.log(res);
-
-    if (response.ok) {
-      // console.log(data1);
-      // Cookies.set("jwt", data.jwt);
-      // console.log(Cookies.get("jwt"));
-      // setUser(data.user);
-      // router.push("/account/dashboard");
-    } else {
-      return;
-      // setError(data.error.message);
-      // console.log(data.error.message);
-      // setError(null);
+    try {
+      const res = await axios.post(
+        "https://localhost:7295/api/account/login",
+        data
+      );
+      // console.log(res.data);
+      console.log(res);
+      const jwttoken = await res.data;
+      console.log(jwttoken);
+      Cookies.set("jwt", jwttoken, { expires: 1 });
+      if (res.status === 200) {
+        router.push("/");
+      }
+    } catch (e) {
+      alert(e);
     }
   };
+
+  function logout() {
+    Cookies.remove("jwt");
+  }
+
+  async function getbook() {
+    const response = await fetch("https://localhost:7295/api/books", {
+      method: "GET",
+      headers: { Authorization: "Bearer " + Cookies.get("jwt") },
+    });
+
+    const books = await response.json();
+
+    if (response.ok) {
+      console.log(books);
+    } else {
+      console.log(response);
+    }
+  }
+
+  // async function login() {
+  //   const data = {
+  //     email: emailInputref.current.value,
+  //     password: passwordInputRef.current.value,
+  //   };
+
+  //   const response = await fetch("https://localhost:7295/api/account/login", {
+  //     method: "POST",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //     body: JSON.stringify(data),
+  //   });
+
+  //   const tokendata = await response.json();
+  //   console.log(tokendata);
+  // }
+
+  // const login = async () => {
+  //   const data = {
+  //     email: emailInputref.current.value,
+  //     password: passwordInputRef.current.value,
+  //   };
+  //   const response = await fetch("https://localhost:7295/api/account/login", {
+  //     method: "POST",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //     body: JSON.stringify(data),
+  //   });
+
+  //   console.log(response);
+
+  //   const data1 = await response.json();
+  //   console.log(data1);
+
+  //   // console.log(res);
+
+  //   if (response.ok) {
+  //     // console.log(data1);
+  //     // Cookies.set("jwt", data.jwt);
+  //     // console.log(Cookies.get("jwt"));
+  //     // setUser(data.user);
+  //     // router.push("/account/dashboard");
+  //   } else {
+  //     return;
+  //     // setError(data.error.message);
+  //     // console.log(data.error.message);
+  //     // setError(null);
+  //   }
+  // };
 
   return (
     <div className="relative flex flex-col justify-center min-h-screen overflow-hidden">
@@ -53,10 +122,13 @@ export default function Login() {
         <h1 className="text-3xl font-semibold text-center text-purple-700 underline uppercase decoration-wavy">
           Sign in
         </h1>
+        <button onClick={logout}>Log Out</button>
+        <button onClick={getbook}>get books</button>
+
         <form className="mt-6" onSubmit={handleSubmit}>
           <div className="mb-2">
             <label
-              for="email"
+              htmlFor="email"
               className="block text-sm font-semibold text-gray-800"
             >
               Email
@@ -69,7 +141,7 @@ export default function Login() {
           </div>
           <div className="mb-2">
             <label
-              for="password"
+              htmlFor="password"
               className="block text-sm font-semibold text-gray-800"
             >
               Password
