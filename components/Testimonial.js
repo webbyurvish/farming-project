@@ -4,11 +4,12 @@ export default function Testimonial() {
   return (
     <>
       <div>
-        <h2 className="text-2xl leading-6 text-gray-800 text-center px-4">
+        {/* <h2 className="text-2xl leading-6 text-gray-800 text-center px-4">
           Testimonials
-        </h2>
+        </h2> */}
         <h1 className="lg:text-5xl md:text-4xl text-2xl font-semibold px-4 leading-10 text-gray-800 mt-6 text-center">
-          What our client says
+          Still not convinced?
+          <br /> Don’t just take our word for it
         </h1>
         <div className="container mx-auto grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 xl:px-20 px-10 py-20 gap-6">
           <div>
@@ -122,6 +123,7 @@ export default function Testimonial() {
                 </svg>
               </div>
             </div>
+
             <div className="flex flex-col items-center justify-center mt-10">
               <img
                 src="https://i.ibb.co/ZgF5Zzz/avatar-1.png"
@@ -136,6 +138,7 @@ export default function Testimonial() {
               </p>
             </div>
           </div>
+
           <div>
             <div className="group w-full bg-white relative flex flex-col items-center hover:bg-indigo-700 cursor-pointer shadow-md md:p-12 p-6">
               <div className="text-gray-600 group-hover:text-white flex flex-col items-center">
@@ -162,7 +165,7 @@ export default function Testimonial() {
                         width="24.5767"
                         height={27}
                         fill="white"
-                        transform="translate(25.2578 27) rotate(-180)"
+                        transform="transl ate(25.2578 27) rotate(-180)"
                       />
                     </clipPath>
                   </defs>

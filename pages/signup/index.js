@@ -1,11 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import Layout from "@/components/Layout";
-import Register from "@/components/Register";
+import FarmerRegister from "@/components/FarmerRegister";
 
 export default function SignUp() {
+  const [isFarmer, setIsFarmer] = useState(true);
+
   return (
     <Layout>
-      <Register />
+      <FarmerRegister />
     </Layout>
   );
 }

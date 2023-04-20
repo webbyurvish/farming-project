@@ -5,6 +5,7 @@ import styles from "@/styles/Layout.module.css";
 import { Header } from "./Header";
 import Footer from "./Footer";
 import Testimonial from "./Testimonial";
+import Buttons from "./Buttons";
 
 export default function Layout({ title, keywords, description, children }) {
   const router = useRouter();
@@ -19,6 +20,8 @@ export default function Layout({ title, keywords, description, children }) {
       <Header />
 
       <div className="mt-[5rem]">{children}</div>
+
+      {router.pathname === "/" && <Buttons />}
 
       {router.pathname === "/" && <Testimonial />}
 
