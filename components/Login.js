@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/router";
 import Cookies from "js-cookie";
@@ -7,10 +7,15 @@ import "react-toastify/dist/ReactToastify.css";
 import navimage from "../public/images/navbarlogopng.png";
 import Image from "next/image";
 import Link from "next/link";
+import { useSelector, useDispatch } from "react-redux";
+import { farmerActions } from "@/slices/farmerSlice";
 
 export default function Login() {
   let emailinputref = useRef();
   let passwordInputRef = useRef();
+
+  const dispatch = useDispatch();
+  const isFarmer = useSelector((state) => state.isFarmer);
 
   const router = useRouter();
 
@@ -127,6 +132,29 @@ export default function Login() {
               <Image src={navimage} height={50} width={50} alt="" />
             </h3>
           </a>
+        </div>
+        <div>
+          <p className="font-bold">ACCOUNT TYPE</p>
+
+          <button
+            onClick={() => {
+              dispatch(farmerActions.setFarmer());
+            }}
+            type="button"
+            className="px-4 py-2 text-sm font-medium text-gray-900 bg-transparent border border-gray-900 rounded-l-lg hover:bg-gray-900 hover:text-white focus:z-10 focus:ring-2 focus:ring-gray-500 focus:bg-gray-900 focus:text-white dark:border-white dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:bg-gray-700"
+          >
+            FARMER
+          </button>
+
+          <button
+            onClick={() => {
+              dispatch(farmerActions.setMentor());
+            }}
+            type="button"
+            className="px-4 py-2 text-sm font-medium text-gray-900 bg-transparent border border-gray-900 rounded-r-md hover:bg-gray-900 hover:text-white focus:z-10 focus:ring-2 focus:ring-gray-500 focus:bg-gray-900 focus:text-white dark:border-white dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:bg-gray-700"
+          >
+            MENTOR
+          </button>
         </div>
         <div className="w-full px-6 py-4 mt-6 overflow-hidden bg-white shadow-md sm:max-w-md sm:rounded-lg">
           <form onSubmit={handleSubmit}>
