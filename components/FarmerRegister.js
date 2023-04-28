@@ -16,7 +16,9 @@ export default function FarmerRegister() {
   let phoneInputRef = useRef();
   let passwordInputRef = useRef();
   let confirmpasswordinputref = useRef();
-  let bioinputref = useRef();
+  let descriptioninputref = useRef();
+  let cropsinputref = useRef();
+  let experienceinputref = useRef();
 
   // const [isFarmer, setIsFarmer] = useState(true);
   const dispatch = useDispatch();
@@ -39,23 +41,27 @@ export default function FarmerRegister() {
           password: passwordInputRef.current.value,
           confirmpassword: confirmpasswordinputref.current.value,
           phonenumber: phoneInputRef.current.value,
+          crops: cropsinputref.current.value,
+          description: descriptioninputref.current.value,
         }
       : {
           firstname: firstnameinputref.current.value,
           lastname: lastnameinputref.current.value,
           email: emailinputref.current.value,
           password: passwordInputRef.current.value,
-          phonenumber: phoneInputRef.current.value,
           confirmpassword: confirmpasswordinputref.current.value,
-          bio: bioinputref.current.value,
-          category: selectedValue,
+          phonenumber: phoneInputRef.current.value,
+          description: descriptioninputref.current.value,
+          categoryid: selectedValue,
+          experience: experienceinputref.current.value,
         };
 
-    let apiurl = isFarmer ? "signup" : "signup/mentor";
+    let apiurl = isFarmer ? "farmer" : "mentor";
 
     try {
       const response = await fetch(
-        `https://localhost:44348/api/account/${apiurl}`,
+        `
+        https://localhost:7059/api/${apiurl}/register`,
         {
           method: "POST",
           headers: {
@@ -177,6 +183,83 @@ export default function FarmerRegister() {
                 />
               </div>
             </div>
+            {isFarmer && (
+              <div className="mt-4">
+                <label
+                  htmlFor="lastname"
+                  className="block text-sm font-medium text-gray-700 undefined"
+                >
+                  crops
+                </label>
+                <div className="flex flex-col items-start">
+                  <input
+                    type="text"
+                    name="lastname"
+                    ref={cropsinputref}
+                    className="block w-full px-4 py-2 mt-2 text-purple-700 bg-white border rounded-md focus:border-purple-400 focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40"
+                  />
+                </div>
+              </div>
+            )}
+            <div className="mt-4">
+              <label
+                htmlFor="bio"
+                className="block text-sm font-medium text-gray-700 undefined"
+              >
+                Description
+              </label>
+              <div className="flex flex-col items-start">
+                <textarea
+                  type="text"
+                  name="bio"
+                  ref={descriptioninputref}
+                  className="block w-full px-4 py-2 mt-2 text-purple-700 bg-white border rounded-md focus:border-purple-400 focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40"
+                ></textarea>
+              </div>
+            </div>
+            {!isFarmer && (
+              <>
+                <div className="mt-4">
+                  <label
+                    htmlFor="category"
+                    className="block text-sm font-medium text-gray-700 undefined"
+                  >
+                    category
+                  </label>
+                  <div className="relative w-full lg:max-w-sm">
+                    <select
+                      id="category"
+                      value={selectedValue}
+                      onChange={handleChange}
+                      className="w-full p-2.5 text-gray-500 bg-white border rounded-md shadow-sm outline-none appearance-none focus:border-indigo-600"
+                    >
+                      <option value={1}>Agriculture Expert</option>
+                      <option value={2}>Weather Forecaster</option>
+                      <option value={3}>Succeed Farmers</option>
+                      <option value={4}>Organic Farming Expert</option>
+                      <option value={5}>Agricultural Crop Dealer</option>
+                      <option value={6}>Agriculture Business Expert</option>
+                    </select>
+                  </div>
+                </div>
+                <div className="mt-4">
+                  <label
+                    htmlFor="lastname"
+                    className="block text-sm font-medium text-gray-700 undefined"
+                  >
+                    Experience
+                  </label>
+                  <div className="flex flex-col items-start">
+                    <input
+                      type="text"
+                      name="lastname"
+                      ref={experienceinputref}
+                      className="block w-full px-4 py-2 mt-2 text-purple-700 bg-white border rounded-md focus:border-purple-400 focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40"
+                    />
+                  </div>
+                </div>
+              </>
+            )}
             <div className="mt-4">
               <label
                 htmlFor="password"
@@ -209,60 +292,6 @@ export default function FarmerRegister() {
                 />
               </div>
             </div>
-            {!isFarmer && (
-              <>
-                <div className="mt-4">
-                  <label
-                    htmlFor="category"
-                    className="block text-sm font-medium text-gray-700 undefined"
-                  >
-                    category
-                  </label>
-                  <div className="relative w-full lg:max-w-sm">
-                    <select
-                      id="category"
-                      value={selectedValue}
-                      onChange={handleChange}
-                      className="w-full p-2.5 text-gray-500 bg-white border rounded-md shadow-sm outline-none appearance-none focus:border-indigo-600"
-                    >
-                      <option value="Agriculture Expert">
-                        Agriculture Expert
-                      </option>
-                      <option value="Weather Forecaster">
-                        Weather Forecaster
-                      </option>
-                      <option value="Succeed Farmers">Succeed Farmers</option>
-                      <option value="Organic Farming Expert">
-                        Organic Farming Expert
-                      </option>
-                      <option value="Agricultural Crop Dealer">
-                        Agricultural Crop Dealer
-                      </option>
-                      <option value="Agriculture Business Expert">
-                        Agriculture Business Expert
-                      </option>
-                    </select>
-                  </div>
-                </div>
-                <div className="mt-4">
-                  <label
-                    htmlFor="bio"
-                    className="block text-sm font-medium text-gray-700 undefined"
-                  >
-                    Bio
-                  </label>
-                  <div className="flex flex-col items-start">
-                    <textarea
-                      type="text"
-                      name="bio"
-                      ref={bioinputref}
-                      className="block w-full px-4 py-2 mt-2 text-purple-700 bg-white border rounded-md focus:border-purple-400 focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40"
-                    ></textarea>
-                  </div>
-                </div>
-              </>
-            )}
-
             <div className="flex items-center justify-center mt-4">
               <button
                 type="submit"

@@ -17,4 +17,4 @@ const farmerSlice = createSlice({
 
 export const farmerActions = farmerSlice.actions;
 
-export default farmerSlice;
+export default farmerSlice.reducer;

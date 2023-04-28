@@ -1,5 +1,4 @@
 import React, { useRef, useState } from "react";
-import axios from "axios";
 import { useRouter } from "next/router";
 import Cookies from "js-cookie";
 import { ToastContainer, toast } from "react-toastify";
@@ -8,119 +7,52 @@ import navimage from "../public/images/navbarlogopng.png";
 import Image from "next/image";
 import Link from "next/link";
 import { useSelector, useDispatch } from "react-redux";
-import { farmerActions } from "@/slices/farmerSlice";
+import { login } from "@/slices/authSlice";
 
 export default function Login() {
   let emailinputref = useRef();
   let passwordInputRef = useRef();
 
   const dispatch = useDispatch();
-  const isFarmer = useSelector((state) => state.isFarmer);
+  // const isFarmer = useSelector((state) => state.isFarmer);
+  const isLoading = useSelector((state) => state.auth.isLoading);
+  const error = useSelector((state) => state.auth.error);
+  const user = useSelector((state) => state.auth.user);
+  const token = useSelector((state) => state.auth.token);
 
   const router = useRouter();
 
-  // const handleSubmit = (e) => {
-  //   e.preventDefault();
-  //   login();
-  // };
-
-  // async function login() {
-  //   const response = await fetch("https://localhost:7295/api/books");
-  //   const data = await response.json();
-
-  //   console.log(data);
-  // }
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const data = {
+    let credentials = {
       email: emailinputref.current.value,
       password: passwordInputRef.current.value,
     };
-    try {
-      const res = await axios.post(
-        "https://localhost:44348/api/account/login",
-        data
-      );
 
-      console.log(res);
-      const jwttoken = await res.data;
-      console.log(jwttoken);
-      Cookies.set("jwt", jwttoken, { expires: 1 });
-      if (res.status === 200) {
-        router.push("/");
-      }
-    } catch (e) {
-      alert(e);
-    }
+    dispatch(login(credentials));
+
+    console.log("User:", user);
+    console.log("Token:", token);
+    // try {
+    //   const res = await axios.post(
+    //     "https://localhost:7059/api/user/login",
+    //     data
+    //   );
+
+    //   console.log(res);
+    //   const jwttoken = await res.data;
+    //   console.log(jwttoken);
+    //   Cookies.set("jwt", jwttoken, { expires: 1 });
+    //   if (res.status === 200) {
+    //     toast.success("Logged in successfully");
+    //     router.push("/");
+    //   } else {
+    //     toast.error("Wrong email id or password");
+    //   }
+    // } catch (e) {
+    //   toast.error("Wrong email id or password");
+    // }
   };
-
-  async function getbook() {
-    const response = await fetch("https://localhost:7295/api/books", {
-      method: "GET",
-      headers: { Authorization: "Bearer " + Cookies.get("jwt") },
-    });
-
-    const books = await response.json();
-
-    if (response.ok) {
-      console.log(books);
-    } else {
-      console.log(response);
-    }
-  }
-
-  // async function login() {
-  //   const data = {
-  //     email: emailInputref.current.value,
-  //     password: passwordInputRef.current.value,
-  //   };
-
-  //   const response = await fetch("https://localhost:7295/api/account/login", {
-  //     method: "POST",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //     body: JSON.stringify(data),
-  //   });
-
-  //   const tokendata = await response.json();
-  //   console.log(tokendata);
-  // }
-
-  // const login = async () => {
-  //   const data = {
-  //     email: emailInputref.current.value,
-  //     password: passwordInputRef.current.value,
-  //   };
-  //   const response = await fetch("https://localhost:7295/api/account/login", {
-  //     method: "POST",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //     body: JSON.stringify(data),
-  //   });
-
-  //   console.log(response);
-
-  //   const data1 = await response.json();
-  //   console.log(data1);
-
-  //   // console.log(res);
-
-  //   if (response.ok) {
-  //     // console.log(data1);
-  //     // Cookies.set("jwt", data.jwt);
-  //     // console.log(Cookies.get("jwt"));
-  //     // setUser(data.user);
-  //     // router.push("/account/dashboard");
-  //   } else {
-  //     return;
-  //     // setError(data.error.message);
-  //     // console.log(data.error.message);
-  //     // setError(null);
-  //   }
-  // };
 
   return (
     <div>
@@ -133,29 +65,7 @@ export default function Login() {
             </h3>
           </a>
         </div>
-        <div>
-          <p className="font-bold">ACCOUNT TYPE</p>
 
-          <button
-            onClick={() => {
-              dispatch(farmerActions.setFarmer());
-            }}
-            type="button"
-            className="px-4 py-2 text-sm font-medium text-gray-900 bg-transparent border border-gray-900 rounded-l-lg hover:bg-gray-900 hover:text-white focus:z-10 focus:ring-2 focus:ring-gray-500 focus:bg-gray-900 focus:text-white dark:border-white dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:bg-gray-700"
-          >
-            FARMER
-          </button>
-
-          <button
-            onClick={() => {
-              dispatch(farmerActions.setMentor());
-            }}
-            type="button"
-            className="px-4 py-2 text-sm font-medium text-gray-900 bg-transparent border border-gray-900 rounded-r-md hover:bg-gray-900 hover:text-white focus:z-10 focus:ring-2 focus:ring-gray-500 focus:bg-gray-900 focus:text-white dark:border-white dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:bg-gray-700"
-          >
-            MENTOR
-          </button>
-        </div>
         <div className="w-full px-6 py-4 mt-6 overflow-hidden bg-white shadow-md sm:max-w-md sm:rounded-lg">
           <form onSubmit={handleSubmit}>
             <div className="mt-4">
