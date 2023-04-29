@@ -11,22 +11,26 @@ export default function Layout({ title, keywords, description, children }) {
   const router = useRouter();
 
   return (
-    <div>
+    <>
       <Head>
         <title>{title}</title>
         <meta name="description" content={description} />
         <meta name="keywords" content={keywords} />
       </Head>
       <Header />
-
-      <div className="mt-[5rem]">{children}</div>
-
-      {router.pathname === "/" && <Buttons />}
-
-      {router.pathname === "/" && <Testimonial />}
-
+      <div
+        className="bg-fixed py-20"
+        style={{
+          backgroundImage:
+            "url('https://images.unsplash.com/photo-1615716175455-9a098e2388be?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1587&q=80')",
+        }}
+      >
+        <div>{children}</div>
+        {router.pathname === "/" && <Buttons />}
+        {router.pathname === "/" && <Testimonial />}
+      </div>
       <Footer />
-    </div>
+    </>
   );
 }
 

@@ -33,7 +33,6 @@ export function Header() {
   }, []);
 
   const router = useRouter();
-
   const dispatch = useDispatch();
 
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
@@ -71,7 +70,7 @@ export function Header() {
               <Link href="/#skills">Scheduled Meetings</Link>
             </li>
             <li className="ml-10 text-sm uppercase hover:border-b">
-              <Link href="/#projects">Find a solution</Link>
+              <Link href="/chat">Find a solution</Link>
             </li>
             {!isLoggedIn && (
               <>

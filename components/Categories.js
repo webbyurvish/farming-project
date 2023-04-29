@@ -21,7 +21,7 @@ export default function Categories() {
 
   return (
     <>
-      <div className="flex m-20 mt-[7rem] justify-between grid grid-cols-3 gap-4">
+      <div className="flex m-20 justify-between grid grid-cols-3 gap-4">
         {categories &&
           categories.map((category) => {
             return (
@@ -29,7 +29,6 @@ export default function Categories() {
                 key={category.id}
                 className="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
               >
-                <div className="flex justify-end px-4 pt-4"></div>
                 <div className="flex flex-col items-center pb-10">
                   <Image
                     className="w-24 h-24 mb-3 rounded-full shadow-lg"
