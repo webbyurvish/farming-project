@@ -7,6 +7,7 @@ import { AiFillStar } from "react-icons/ai";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchmentor } from "@/slices/singleMentorSlice";
 import { resetMentors } from "@/slices/singleMentorSlice";
+import Link from "next/link";
 
 export default function MentorProfile({ mentorId }) {
   const dispatch = useDispatch();
@@ -406,9 +407,12 @@ export default function MentorProfile({ mentorId }) {
                                 </p>
                               </div>
                               <div className="mt-8 flex items-center">
-                                <a className="text-white w-full bg-teal-500 text-center rounded px-[6rem] py-3 hover:bg-teal-700 font-semibold duration-700">
+                                <Link
+                                  href="/chat"
+                                  className="text-white w-full bg-teal-500 text-center rounded px-[6rem] py-3 hover:bg-teal-700 font-semibold duration-700"
+                                >
                                   Communicate Now
-                                </a>
+                                </Link>
                               </div>
                             </div>
                           </div>

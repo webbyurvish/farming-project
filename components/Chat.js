@@ -1,97 +1,80 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import * as signalR from "@microsoft/signalr";
 import { API_URL } from "@/config";
-import axios from "axios";
+import { addMessage } from "@/slices/chatSlice";
 
 const Chat = () => {
-  const [connection, setConnection] = useState(null);
   const [messages, setMessages] = useState([]);
-  const [name, setName] = useState("");
-  const [message, setMessage] = useState("");
-  const [isDisconnected, setIsDisconnected] = useState(false);
+  const [newMessage, setNewMessage] = useState("");
+  const connectionRef = useRef(null);
+  const mentorId = 7;
+  const senderid = 1;
+
+  const dispatch = useDispatch();
+
+  const chatHistory = useSelector((state) => state.chat.chatHistory);
 
   useEffect(() => {
-    const newConnection = new signalR.HubConnectionBuilder()
+    // Create a SignalR connection
+    connectionRef.current = new signalR.HubConnectionBuilder()
       .withUrl(`${API_URL}/chat`)
-      .withAutomaticReconnect()
       .build();
 
-    setConnection(newConnection);
+    // Subscribe to incoming messages from the server
+    connectionRef.current.on("ReceiveMessage", (message) => {
+      setMessages((messages) => [...messages, message]);
+    });
+
+    // Start the SignalR connection
+    connectionRef.current.start();
+
+    // Unsubscribe from the SignalR connection on component unmount
+    return () => {
+      connectionRef.current.stop();
+    };
   }, []);
 
-  useEffect(() => {
-    if (connection) {
-      connection.on("ReceiveMessage", (user, message) => {
-        const updatedMessages = messages.concat({ user, message });
-        setMessages(updatedMessages);
-      });
-
-      connection
-        .start()
-        .then(() => {
-          console.log("SignalR Connected");
-          setIsDisconnected(false);
-        })
-        .catch((err) => console.log("SignalR Connection Error: ", err));
-
-      connection.onclose((error) => {
-        console.log("SignalR Connection Closed: ", error);
-        setIsDisconnected(true);
-      });
-    }
-  }, [connection]);
-
-  useEffect(() => {
-    axios
-      .get(`${API_URL}/api/chat`)
-      .then((response) => setMessages(response.data))
-      .catch((error) => console.log(error));
-  }, []);
-
-  const handleSubmit = (e) => {
+  // Send a new message to the server
+  const sendMessage = (e) => {
     e.preventDefault();
-    if (name && message) {
-      if (!isDisconnected) {
-        connection.invoke("SendMessage", name, message);
-        setMessage("");
-        postMessage(name, message); // call postMessage with name and message arguments
-      } else {
-        console.log("SignalR not connected");
-      }
-    }
-  };
-
-  const postMessage = (user, message) => {
-    axios
-      .post(`${API_URL}/api/chat`, { user, message })
-      .then((response) => console.log(response))
-      .catch((error) => console.log(error));
+    const message = {
+      senderId: senderid,
+      receiverId: mentorId,
+      content: newMessage,
+    };
+    console.log(message);
+    connectionRef.current.invoke("SendMessage", message);
+    setNewMessage("");
   };
 
   return (
     <div>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          placeholder="Name"
-        />
-        <input
-          type="text"
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
-          placeholder="Message"
-        />
-        <button type="submit">Send</button>
-      </form>
+      <h2>Chat with Mentor {mentorId}</h2>
       <div>
-        {messages.map((m, i) => (
-          <div key={i}>
-            {m.user}: {m.message}
+        {messages.map((message, index) => (
+          <div key={index}>
+            <p>
+              {message.senderId}: {message.content}
+            </p>
+          </div>
+        ))}
+        {chatHistory.map((message) => (
+          <div key={message.id}>
+            <strong>{message.sender.name}: </strong>
+            {message.content}
           </div>
         ))}
       </div>
+      <form onSubmit={sendMessage}>
+        <input
+          type="text"
+          placeholder="Enter a message"
+          value={newMessage}
+          onChange={(e) => setNewMessage(e.target.value)}
+        />
+        <button type="submit">Send</button>
+      </form>
     </div>
   );
 };
