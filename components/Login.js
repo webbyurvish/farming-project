@@ -31,27 +31,11 @@ export default function Login() {
 
     dispatch(login(credentials));
 
-    console.log("User:", user);
-    console.log("Token:", token);
-    // try {
-    //   const res = await axios.post(
-    //     "https://localhost:7059/api/user/login",
-    //     data
-    //   );
-
-    //   console.log(res);
-    //   const jwttoken = await res.data;
-    //   console.log(jwttoken);
-    //   Cookies.set("jwt", jwttoken, { expires: 1 });
-    //   if (res.status === 200) {
-    //     toast.success("Logged in successfully");
-    //     router.push("/");
-    //   } else {
-    //     toast.error("Wrong email id or password");
-    //   }
-    // } catch (e) {
-    //   toast.error("Wrong email id or password");
-    // }
+    if (user && user.role === "mentor") {
+      router.push("/mentor");
+    } else {
+      router.push("/");
+    }
   };
 
   return (
@@ -115,7 +99,7 @@ export default function Login() {
                 className="text-sm text-gray-600 underline hover:text-gray-900"
                 href="/signup"
               >
-                Don't have an account yet ?{" "}
+                Don't have an account yet ?
                 <span className="text-blue-600">Sign Up</span>
               </Link>
             </div>

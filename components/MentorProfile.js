@@ -11,7 +11,10 @@ import Link from "next/link";
 
 export default function MentorProfile({ mentorId }) {
   const dispatch = useDispatch();
+
   const mentor = useSelector((state) => state.singlementor.data);
+  // const categoryId = mentor.category.id;
+  console.log(mentor);
 
   console.log(mentorId);
 
@@ -408,7 +411,7 @@ export default function MentorProfile({ mentorId }) {
                               </div>
                               <div className="mt-8 flex items-center">
                                 <Link
-                                  href="/chat"
+                                  href={`/mentorscategory/${mentor.category.id}/${mentor.id}/chat`}
                                   className="text-white w-full bg-teal-500 text-center rounded px-[6rem] py-3 hover:bg-teal-700 font-semibold duration-700"
                                 >
                                   Communicate Now

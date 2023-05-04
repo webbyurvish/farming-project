@@ -5,6 +5,7 @@ import categorySlice from "@/slices/categorySlice";
 import authReducer from "@/slices/authSlice";
 import singleMentorSlice from "@/slices/singleMentorSlice";
 import chatSlice from "@/slices/chatSlice";
+import mentorChatSlice from "@/slices/mentorChatSlice";
 
 const store = configureStore({
   reducer: {
@@ -14,6 +15,7 @@ const store = configureStore({
     auth: authReducer,
     singlementor: singleMentorSlice,
     chat: chatSlice,
+    mentorChat: mentorChatSlice,
   },
 });
 

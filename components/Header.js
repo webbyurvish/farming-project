@@ -36,7 +36,7 @@ export function Header() {
   const dispatch = useDispatch();
 
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
-
+  const user = useSelector((state) => state.auth.user);
   const isLoading = useSelector((state) => state.auth.isLoading);
 
   if (isLoading) {
@@ -63,15 +63,32 @@ export function Header() {
         </Link>
         <div>
           <ul style={{ color: `${linkColor}` }} className="hidden md:flex">
-            <li className="ml-10 text-sm uppercase hover:border-b">
-              <Link href="/mentorscategory">Find a Mentor</Link>
-            </li>
-            <li className="ml-10 text-sm uppercase hover:border-b">
-              <Link href="/#skills">Scheduled Meetings</Link>
-            </li>
-            <li className="ml-10 text-sm uppercase hover:border-b">
-              <Link href="/chat">Find a solution</Link>
-            </li>
+            {user && user.role === "Farmer" && (
+              <>
+                <li className="ml-10 text-sm uppercase hover:border-b">
+                  <Link href="/mentorscategory">Find a Mentor</Link>
+                </li>
+                <li className="ml-10 text-sm uppercase hover:border-b">
+                  <Link href="/#skills">Scheduled Meetings</Link>
+                </li>
+                <li className="ml-10 text-sm uppercase hover:border-b">
+                  <Link href="/chat">Find a solution</Link>
+                </li>
+              </>
+            )}
+            {user && user.role === "Mentor" && (
+              <>
+                <li className="ml-10 text-sm uppercase hover:border-b">
+                  <Link href="/mentor/chats">Conversations</Link>
+                </li>
+                {/* <li className="ml-10 text-sm uppercase hover:border-b">
+                  <Link href="/#skills">Scheduled Meetings</Link>
+                </li>
+                <li className="ml-10 text-sm uppercase hover:border-b">
+                  <Link href="/chat">Find a solution</Link>
+                </li> */}
+              </>
+            )}
             {!isLoggedIn && (
               <>
                 <li className="ml-10 text-sm uppercase hover:border-b">

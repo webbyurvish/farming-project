@@ -10,7 +10,6 @@ export default function Categories() {
   const dispatch = useDispatch();
 
   const categories = useSelector((state) => state.category.data);
-  const isLoading = useSelector((state) => state.category.isLoading);
 
   // Trigger the `fetchCategories()` action only if categories are not already available in the store
   if (!categories) {

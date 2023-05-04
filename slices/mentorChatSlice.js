@@ -23,7 +23,7 @@ export const sendMessage = createAsyncThunk(
   }
 );
 
-export const chatSlice = createSlice({
+export const mentorChatSlice = createSlice({
   name: "chat",
   initialState: {
     messages: [],
@@ -57,4 +57,4 @@ export const chatSlice = createSlice({
   },
 });
 
-export default chatSlice.reducer;
+export default mentorChatSlice.reducer;
