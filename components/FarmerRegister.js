@@ -9,7 +9,15 @@ import { useSelector, useDispatch } from "react-redux";
 import { farmerActions } from "@/slices/farmerSlice";
 
 export default function FarmerRegister() {
+  const dispatch = useDispatch();
+  const isFarmer = useSelector((state) => state.farmer.isFarmer);
+
+  const [selectedValue, setSelectedValue] = useState("Agriculture Expert");
+
+  const [image, setImage] = useState(null);
+
   const router = useRouter();
+
   let firstnameinputref = useRef();
   let lastnameinputref = useRef();
   let emailinputref = useRef();
@@ -20,11 +28,22 @@ export default function FarmerRegister() {
   let cropsinputref = useRef();
   let experienceinputref = useRef();
 
-  // const [isFarmer, setIsFarmer] = useState(true);
-  const dispatch = useDispatch();
-  const isFarmer = useSelector((state) => state.farmer.isFarmer);
+  const formData = new FormData();
+  if (isFarmer) {
+    formData.append("crops", cropsinputref.current.value);
+  } else {
+    formData.append("categoryid", selectedValue);
+  }
+  formData.append("firstname", firstnameinputref.current.value);
+  formData.append("lastname", lastnameinputref.current.value);
+  formData.append("email", emailinputref.current.value);
+  formData.append("phonenumber", phoneInputRef.current.value);
+  formData.append("description", descriptioninputref.current.value);
+  formData.append("password", passwordInputRef.current.value);
+  formData.append("confirmpassword", confirmpasswordinputref.current.value);
+  formData.append("image", image);
 
-  const [selectedValue, setSelectedValue] = useState("Agriculture Expert");
+  // const [isFarmer, setIsFarmer] = useState(true);
 
   const handleChange = (e) => {
     setSelectedValue(e.target.value);
@@ -32,29 +51,6 @@ export default function FarmerRegister() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    let data = isFarmer
-      ? {
-          firstname: firstnameinputref.current.value,
-          lastname: lastnameinputref.current.value,
-          email: emailinputref.current.value,
-          password: passwordInputRef.current.value,
-          confirmpassword: confirmpasswordinputref.current.value,
-          phonenumber: phoneInputRef.current.value,
-          crops: cropsinputref.current.value,
-          description: descriptioninputref.current.value,
-        }
-      : {
-          firstname: firstnameinputref.current.value,
-          lastname: lastnameinputref.current.value,
-          email: emailinputref.current.value,
-          password: passwordInputRef.current.value,
-          confirmpassword: confirmpasswordinputref.current.value,
-          phonenumber: phoneInputRef.current.value,
-          description: descriptioninputref.current.value,
-          categoryid: selectedValue,
-          experience: experienceinputref.current.value,
-        };
 
     let apiurl = isFarmer ? "farmer" : "mentor";
 
@@ -96,7 +92,6 @@ export default function FarmerRegister() {
         </div>
         <div>
           <p className="font-bold">ACCOUNT TYPE</p>
-
           <button
             onClick={() => {
               dispatch(farmerActions.setFarmer());
@@ -130,6 +125,7 @@ export default function FarmerRegister() {
                 <input
                   type="text"
                   name="firstname"
+                  required
                   ref={firstnameinputref}
                   className="block w-full px-4 py-2 mt-2 text-purple-700 bg-white border rounded-md focus:border-purple-400 focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40"
                 />
@@ -146,6 +142,7 @@ export default function FarmerRegister() {
                 <input
                   type="text"
                   name="lastname"
+                  required
                   ref={lastnameinputref}
                   className="block w-full px-4 py-2 mt-2 text-purple-700 bg-white border rounded-md focus:border-purple-400 focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40"
                 />
@@ -162,6 +159,7 @@ export default function FarmerRegister() {
                 <input
                   type="email"
                   name="email"
+                  required
                   ref={emailinputref}
                   className="block w-full px-4 py-2 mt-2 text-purple-700 bg-white border rounded-md focus:border-purple-400 focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40"
                 />
@@ -178,6 +176,7 @@ export default function FarmerRegister() {
                 <input
                   type="tel"
                   name="phonenumber"
+                  required
                   ref={phoneInputRef}
                   className="block w-full px-4 py-2 mt-2 text-purple-700 bg-white border rounded-md focus:border-purple-400 focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40"
                 />
@@ -189,12 +188,13 @@ export default function FarmerRegister() {
                   htmlFor="lastname"
                   className="block text-sm font-medium text-gray-700 undefined"
                 >
-                  crops
+                  Crops
                 </label>
                 <div className="flex flex-col items-start">
                   <input
                     type="text"
                     name="lastname"
+                    required
                     ref={cropsinputref}
                     className="block w-full px-4 py-2 mt-2 text-purple-700 bg-white border rounded-md focus:border-purple-400 focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40"
                   />
@@ -213,9 +213,29 @@ export default function FarmerRegister() {
                   type="text"
                   name="bio"
                   ref={descriptioninputref}
+                  required
                   className="block w-full px-4 py-2 mt-2 text-purple-700 bg-white border rounded-md focus:border-purple-400 focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40"
                 ></textarea>
               </div>
+            </div>
+            <div className="mt-4">
+              <label
+                className="block text-sm font-medium text-gray-700 undefined"
+                htmlFor="image"
+              >
+                Upload Image
+              </label>
+              <input
+                className="block w-full px-4 py-2 mt-2 text-black-700 bg-white border rounded-md focus:border-purple-400 focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40"
+                aria-describedby="file_input_help"
+                id="image"
+                name="image"
+                accept="image/*"
+                ref={imageinputref}
+                type="file"
+                onChange={(e) => setImage(e.target.files[0])}
+                required
+              />
             </div>
             {!isFarmer && (
               <>
@@ -224,7 +244,7 @@ export default function FarmerRegister() {
                     htmlFor="category"
                     className="block text-sm font-medium text-gray-700 undefined"
                   >
-                    category
+                    Category
                   </label>
                   <div className="relative w-full lg:max-w-sm">
                     <select
@@ -305,7 +325,7 @@ export default function FarmerRegister() {
                 className="text-sm text-gray-600 underline hover:text-gray-900"
                 href="/login"
               >
-                Already registered?
+                Already registered? Login
               </Link>
             </div>
           </form>

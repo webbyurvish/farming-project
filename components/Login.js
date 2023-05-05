@@ -14,11 +14,8 @@ export default function Login() {
   let passwordInputRef = useRef();
 
   const dispatch = useDispatch();
-  // const isFarmer = useSelector((state) => state.isFarmer);
-  const isLoading = useSelector((state) => state.auth.isLoading);
-  const error = useSelector((state) => state.auth.error);
+
   const user = useSelector((state) => state.auth.user);
-  const token = useSelector((state) => state.auth.token);
 
   const router = useRouter();
 

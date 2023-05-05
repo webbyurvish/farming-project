@@ -1,31 +1,14 @@
 import React from "react";
-import { useEffect } from "react";
-import navimage from "../public/images/profile.jpg";
 import Image from "next/image";
 import { BiMessageRoundedDetail } from "react-icons/bi";
 import { AiFillStar } from "react-icons/ai";
-import { useSelector, useDispatch } from "react-redux";
-import { fetchmentor } from "@/slices/singleMentorSlice";
-import { resetMentors } from "@/slices/singleMentorSlice";
-import Link from "next/link";
 
-export default function MentorProfile({ mentorId }) {
-  const dispatch = useDispatch();
-
-  const mentor = useSelector((state) => state.singlementor.data);
-  // const categoryId = mentor.category.id;
+export default function MentorProfile({ mentor }) {
   console.log(mentor);
 
-  console.log(mentorId);
-
-  useEffect(() => {
-    dispatch(fetchmentor(mentorId));
-    return () => {
-      dispatch(resetMentors());
-    };
-  }, []);
-
-  console.log(mentor);
+  if (typeof window === "undefined") {
+    return <div>Loading...</div>;
+  }
 
   return (
     <>
@@ -35,11 +18,18 @@ export default function MentorProfile({ mentorId }) {
             <div className="max-w-screen-xl mx-auto">
               <div className="-mt-12 w-full lg:w-1/2 xl:w-2/3 px-4 pb-8 align-bottom flex items-end">
                 <div className="inline-block w-48 h-48 relative top-20 rounded-full overflow-hidden bg-white p-1 flex-none">
-                  <Image
-                    className="w-full h-full rounded-full"
-                    src={navimage}
-                    alt="Bonnie image"
+                  <img
+                    src={`https://localhost:7059${mentor.imageUrl}`}
+                    alt="My Image"
                   />
+
+                  {/* <Image
+                    className="w-full h-full rounded-full"
+                    src={`${API_URL}${mentor.imageUrl}`}
+                    height={50}
+                    width={50}
+                    alt="Bonnie image"
+                  /> */}
                 </div>
                 <div className="hidden sm:inline-block ml-6 grow">
                   <div className="flex items-end gap-x-4">
@@ -86,10 +76,7 @@ export default function MentorProfile({ mentorId }) {
                   </span>
                   <div className="mt-5 font-normal text-slate-600">
                     <span className="block mb-2">
-                      <a
-                        href="https://mentorcruise.com/country/us/"
-                        className=" text-slate-600 flex"
-                      >
+                      <a className=" text-slate-600 flex">
                         <svg
                           className="w-5 h-5 text-teal-600 align-sub mr-1"
                           fill="currentColor"
@@ -97,7 +84,7 @@ export default function MentorProfile({ mentorId }) {
                           xmlns="http://www.w3.org/2000/svg"
                         >
                           <path
-                            fill-rule="evenodd"
+                            fillRule="evenodd"
                             d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"
                             clip-rule="evenodd"
                           ></path>
@@ -116,14 +103,7 @@ export default function MentorProfile({ mentorId }) {
                       </svg>
                       <span className="flex">
                         5.0 (
-                        <a
-                          onclick="if (!window.__cfRLUnblockHandlers) return false; document.querySelector('#reviews').scrollIntoView({ behavior: 'smooth'});"
-                          className="text-slate-600 underline "
-                          data-cf-modified-aa97106c811f940bdd2a74d1-=""
-                        >
-                          16 reviews
-                        </a>
-                        )
+                        <a className="text-slate-600 underline ">16 reviews</a>)
                       </span>
                     </span>
                     <span className="block mb-2 flex">
@@ -134,9 +114,9 @@ export default function MentorProfile({ mentorId }) {
                         xmlns="http://www.w3.org/2000/svg"
                       >
                         <path
-                          fill-rule="evenodd"
+                          fillRule="evenodd"
                           d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z"
-                          clip-rule="evenodd"
+                          clipRule="evenodd"
                         ></path>
                       </svg>
                       <span>Active today</span>
@@ -150,7 +130,7 @@ export default function MentorProfile({ mentorId }) {
                       >
                         <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z"></path>
                         <path
-                          fill-rule="evenodd"
+                          fillRule="evenodd"
                           d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm9.707 5.707a1 1 0 00-1.414-1.414L9 12.586l-1.293-1.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
                           clip-rule="evenodd"
                         ></path>
@@ -165,11 +145,7 @@ export default function MentorProfile({ mentorId }) {
                     </span>
                   </div>
                   <div className="mt-5 flex gap-x-4">
-                    <div
-                      className="white-btn bg-gray-300 font-semibold hover:bg-gray-500 border px-[15px] py-[7px] small text-sm flex"
-                      onclick="if (!window.__cfRLUnblockHandlers) return false; $('#introvideo').addClass('is-active')"
-                      data-cf-modified-aa97106c811f940bdd2a74d1-=""
-                    >
+                    <div className="white-btn bg-gray-300 font-semibold hover:bg-gray-500 border px-[15px] py-[7px] small text-sm flex">
                       <div className="mr-1">
                         <BiMessageRoundedDetail size={20} />
                       </div>
@@ -251,13 +227,13 @@ export default function MentorProfile({ mentorId }) {
                   <div className="modal content" id="sessions">
                     <div
                       className="modal-background"
-                      onclick="if (!window.__cfRLUnblockHandlers) return false; $('#sessions').removeClass('is-active');"
+                      onClick="if (!window.__cfRLUnblockHandlers) return false; $('#sessions').removeClass('is-active');"
                       data-cf-modified-aa97106c811f940bdd2a74d1-=""
                     ></div>
                     <div className="modal-card w-full max-w-screen-lg"></div>
                     <button
                       className="modal-close is-large"
-                      onclick="if (!window.__cfRLUnblockHandlers) return false; $('#sessions').removeClass('is-active');"
+                      onClick="if (!window.__cfRLUnblockHandlers) return false; $('#sessions').removeClass('is-active');"
                       aria-label="close"
                       data-cf-modified-aa97106c811f940bdd2a74d1-=""
                     ></button>
@@ -298,7 +274,7 @@ export default function MentorProfile({ mentorId }) {
                                     xmlns="http://www.w3.org/2000/svg"
                                   >
                                     <path
-                                      fill-rule="evenodd"
+                                      fillRule="evenodd"
                                       d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
                                       clip-rule="evenodd"
                                     ></path>
@@ -318,7 +294,7 @@ export default function MentorProfile({ mentorId }) {
                                     xmlns="http://www.w3.org/2000/svg"
                                   >
                                     <path
-                                      fill-rule="evenodd"
+                                      fillRule="evenodd"
                                       d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
                                       clip-rule="evenodd"
                                     ></path>
@@ -333,7 +309,7 @@ export default function MentorProfile({ mentorId }) {
                                     xmlns="http://www.w3.org/2000/svg"
                                   >
                                     <path
-                                      fill-rule="evenodd"
+                                      fillRule="evenodd"
                                       d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
                                       clip-rule="evenodd"
                                     ></path>
@@ -349,7 +325,7 @@ export default function MentorProfile({ mentorId }) {
                                     xmlns="http://www.w3.org/2000/svg"
                                   >
                                     <path
-                                      fill-rule="evenodd"
+                                      fillRule="evenodd"
                                       d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
                                       clip-rule="evenodd"
                                     ></path>
@@ -370,7 +346,7 @@ export default function MentorProfile({ mentorId }) {
                                     xmlns="http://www.w3.org/2000/svg"
                                   >
                                     <path
-                                      fill-rule="evenodd"
+                                      fillRule="evenodd"
                                       d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
                                       clip-rule="evenodd"
                                     ></path>
@@ -386,7 +362,7 @@ export default function MentorProfile({ mentorId }) {
                                     xmlns="http://www.w3.org/2000/svg"
                                   >
                                     <path
-                                      fill-rule="evenodd"
+                                      fillRule="evenodd"
                                       d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
                                       clip-rule="evenodd"
                                     ></path>
@@ -401,7 +377,7 @@ export default function MentorProfile({ mentorId }) {
                                     xmlns="http://www.w3.org/2000/svg"
                                   >
                                     <path
-                                      fill-rule="evenodd"
+                                      fillRule="evenodd"
                                       d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
                                       clip-rule="evenodd"
                                     ></path>
@@ -409,14 +385,14 @@ export default function MentorProfile({ mentorId }) {
                                   7 day free trial! Cancel anytime.
                                 </p>
                               </div>
-                              <div className="mt-8 flex items-center">
+                              {/* <div className="mt-8 flex items-center">
                                 <Link
                                   href={`/mentorscategory/${mentor.category.id}/${mentor.id}/chat`}
                                   className="text-white w-full bg-teal-500 text-center rounded px-[6rem] py-3 hover:bg-teal-700 font-semibold duration-700"
                                 >
                                   Communicate Now
                                 </Link>
-                              </div>
+                              </div> */}
                             </div>
                           </div>
                         </div>

@@ -23,6 +23,7 @@
     "react-testimonial": "^1.0.0",
     "react-toastify": "^9.1.2",
     "redux": "^4.2.1",
+    "redux-persist": "^6.0.0",
     "redux-thunk": "^2.4.2",
     "socket.io-client": "^4.6.1"
   },

@@ -6,9 +6,19 @@ import authReducer from "@/slices/authSlice";
 import singleMentorSlice from "@/slices/singleMentorSlice";
 import chatSlice from "@/slices/chatSlice";
 import mentorChatSlice from "@/slices/mentorChatSlice";
+import { persistStore, persistReducer } from "redux-persist";
+import storage from "redux-persist/lib/storage";
+import { combineReducers } from "@reduxjs/toolkit";
 
-const store = configureStore({
-  reducer: {
+const persistConfig = {
+  key: "root",
+  storage,
+  whitelist: ["mentor", "category", "singlementor", "chat", "mentorchat"], // add the slices you want to persist here
+};
+
+const persistedReducer = persistReducer(
+  persistConfig,
+  combineReducers({
     farmer: farmerSlice,
     mentor: mentorsSlice,
     category: categorySlice,
@@ -16,7 +26,13 @@ const store = configureStore({
     singlementor: singleMentorSlice,
     chat: chatSlice,
     mentorChat: mentorChatSlice,
-  },
+  })
+);
+
+const store = configureStore({
+  reducer: persistedReducer,
 });
 
-export default store;
+const persistor = persistStore(store);
+
+export { store, persistor };

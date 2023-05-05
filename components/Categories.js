@@ -1,23 +1,8 @@
 import Image from "next/image";
-import { image1 } from "../public/images/image.jpg";
-import { BsFillPeopleFill } from "react-icons/bs";
 import Link from "next/link";
 import navimage from "../public/images/navbarlogopng.png";
-import { useSelector, useDispatch } from "react-redux";
-import { fetchCategories } from "@/slices/categorySlice";
 
-export default function Categories() {
-  const dispatch = useDispatch();
-
-  const categories = useSelector((state) => state.category.data);
-
-  // Trigger the `fetchCategories()` action only if categories are not already available in the store
-  if (!categories) {
-    dispatch(fetchCategories());
-  }
-
-  console.log(categories);
-
+export default function Categories({ categories }) {
   return (
     <>
       <div className="flex m-20 justify-between grid grid-cols-3 gap-4">

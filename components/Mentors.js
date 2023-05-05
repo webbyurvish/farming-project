@@ -1,29 +1,9 @@
 import React from "react";
-import { useCallback } from "react";
-import navimage from "../public/images/navbarlogopng.png";
-import backgroundImage from "../public/images/mentors.jpg";
-import Image from "next/image";
-import { fetchMentors } from "@/slices/mentorSlice";
-import { resetMentors } from "@/slices/mentorSlice";
-import { useSelector, useDispatch } from "react-redux";
-import { useEffect } from "react";
-import Layout from "./Layout";
+
 import Link from "next/link";
 
-export default function ({ categoryId }) {
-  const dispatch = useDispatch();
-  const data = useSelector((state) => state.mentor.data);
-
-  const categoryid = categoryId.categoryId;
-
-  useEffect(() => {
-    dispatch(fetchMentors(categoryid));
-    return () => {
-      dispatch(resetMentors());
-    };
-  }, []);
-
-  console.log(data);
+export default function ({ mentors, categoryId }) {
+  console.log(mentors);
   return (
     <>
       <div
@@ -33,8 +13,8 @@ export default function ({ categoryId }) {
             "url('https://images.unsplash.com/photo-1615716175455-9a098e2388be?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1587&q=80')",
         }}
       >
-        {data &&
-          data.map((mentor) => {
+        {mentors &&
+          mentors.map((mentor) => {
             return (
               <>
                 <div
@@ -82,7 +62,7 @@ export default function ({ categoryId }) {
 
                       <div className="pt-12 pb-8">
                         <Link
-                          href={`/mentorscategory/${categoryid}/${mentor.id}`}
+                          href={`/mentors/${mentor.id}`}
                           className="bg-green-700 hover:bg-green-900 text-white font-bold py-2 px-4 rounded-full"
                         >
                           View Profile

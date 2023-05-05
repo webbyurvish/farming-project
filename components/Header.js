@@ -8,8 +8,6 @@ import navimage from "../public/images/navbarlogopng.png";
 import { useSelector, useDispatch } from "react-redux";
 import { logout } from "@/slices/authSlice";
 import { useRouter } from "next/router";
-// import { useRouter } from 'next/router';
-// import NavLogo from "../public/assets/navLogo.png";
 
 export function Header() {
   const [nav, setNav] = useState(false);
@@ -50,11 +48,10 @@ export function Header() {
 
   return (
     <div
-      style={{ backgroundColor: `${navBg}` }}
       className={
         shadow
-          ? "top-0 fixed w-full h-20 shadow-xl z-[100] ease-in-out duration-300"
-          : "top-0 fixed w-full h-20 z-[100]"
+          ? "top-0 fixed bg-white w-full h-17 shadow-xl z-[100] ease-in-out duration-300"
+          : "top-0 fixed bg-white w-full h-17 z-[100]"
       }
     >
       <div className="flex justify-between items-center w-full h-full px-2 2xl:px-16">
@@ -63,13 +60,10 @@ export function Header() {
         </Link>
         <div>
           <ul style={{ color: `${linkColor}` }} className="hidden md:flex">
-            {user && user.role === "Farmer" && (
+            {isLoggedIn && (
               <>
                 <li className="ml-10 text-sm uppercase hover:border-b">
                   <Link href="/mentorscategory">Find a Mentor</Link>
-                </li>
-                <li className="ml-10 text-sm uppercase hover:border-b">
-                  <Link href="/#skills">Scheduled Meetings</Link>
                 </li>
                 <li className="ml-10 text-sm uppercase hover:border-b">
                   <Link href="/chat">Find a solution</Link>
@@ -81,33 +75,22 @@ export function Header() {
                 <li className="ml-10 text-sm uppercase hover:border-b">
                   <Link href="/mentor/chats">Conversations</Link>
                 </li>
-                {/* <li className="ml-10 text-sm uppercase hover:border-b">
-                  <Link href="/#skills">Scheduled Meetings</Link>
-                </li>
-                <li className="ml-10 text-sm uppercase hover:border-b">
-                  <Link href="/chat">Find a solution</Link>
-                </li> */}
               </>
             )}
             {!isLoggedIn && (
               <>
-                <li className="ml-10 text-sm uppercase hover:border-b">
+                <li className="ml-10 mr-10 text-sm uppercase hover:border-b">
                   <Link href="/login">Login</Link>
-                </li>
-                <li className="ml-10 text-sm uppercase hover:border-b">
-                  <Link href="/signup">Sign Up</Link>
                 </li>
               </>
             )}
-            {
-              isLoggedIn && <button onClick={handlelogout}>Logout</button>
-
-              // <li className="ml-10 text-sm uppercase hover:border-b">
-              //   <Link href="/">
-              //     <button onClick={handlelogout}>Logout</button>
-              //   </Link>
-              // </li>
-            }
+            {isLoggedIn && (
+              <li className="ml-10 text-sm uppercase hover:border-b">
+                <Link href="/" onClick={handlelogout}>
+                  Logout
+                </Link>
+              </li>
+            )}
           </ul>
           <div
             style={{ color: `${linkColor}` }}
