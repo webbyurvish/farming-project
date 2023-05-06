@@ -60,16 +60,25 @@ export function Header() {
         </Link>
         <div>
           <ul style={{ color: `${linkColor}` }} className="hidden md:flex">
-            {isLoggedIn && (
-              <>
-                <li className="ml-10 text-sm uppercase hover:border-b">
-                  <Link href="/mentorscategory">Find a Mentor</Link>
-                </li>
-                <li className="ml-10 text-sm uppercase hover:border-b">
-                  <Link href="/chat">Find a solution</Link>
-                </li>
-              </>
-            )}
+            <>
+              <li className="ml-7 text-sm  ">
+                <Link
+                  href="/mentorscategory"
+                  className="bg-green-700 uppercase hover:bg-green-900 text-white font-bold py-2 px-4 rounded-full"
+                >
+                  Find a Mentor
+                </Link>
+              </li>
+              <li className="ml-7 text-sm  ">
+                <Link
+                  href="/chat"
+                  className="bg-green-700 uppercase hover:bg-green-900 text-white font-bold py-2 px-4 rounded-full"
+                >
+                  Find a solution
+                </Link>
+              </li>
+            </>
+
             {user && user.role === "Mentor" && (
               <>
                 <li className="ml-10 text-sm uppercase hover:border-b">

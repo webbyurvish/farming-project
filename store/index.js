@@ -6,6 +6,7 @@ import authReducer from "@/slices/authSlice";
 import singleMentorSlice from "@/slices/singleMentorSlice";
 import chatSlice from "@/slices/chatSlice";
 import mentorChatSlice from "@/slices/mentorChatSlice";
+import forgotPasswordSlice from "@/slices/forgotPasswordSlice";
 import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import { combineReducers } from "@reduxjs/toolkit";
@@ -13,7 +14,16 @@ import { combineReducers } from "@reduxjs/toolkit";
 const persistConfig = {
   key: "root",
   storage,
-  whitelist: ["mentor", "category", "singlementor", "chat", "mentorchat"], // add the slices you want to persist here
+  whitelist: [
+    "auth",
+    "farmer",
+    "mentor",
+    "category",
+    "singlementor",
+    "chat",
+    "mentorchat",
+    "forgotPassword",
+  ], // add the slices you want to persist here
 };
 
 const persistedReducer = persistReducer(
@@ -26,6 +36,7 @@ const persistedReducer = persistReducer(
     singlementor: singleMentorSlice,
     chat: chatSlice,
     mentorChat: mentorChatSlice,
+    forgotPassword: forgotPasswordSlice,
   })
 );
 

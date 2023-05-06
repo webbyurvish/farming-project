@@ -1,6 +1,6 @@
 import Link from "next/link";
 import React from "react";
-import { AiOutlineMail } from "react-icons/ai";
+import { Paper } from "@mui/material";
 import { BsFillPersonLinesFill } from "react-icons/bs";
 import { FaPeopleArrows, FaVideo, FaGripfire } from "react-icons/fa";
 

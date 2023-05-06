@@ -1,52 +1,61 @@
-import React, { useRef, useEffect, useState } from "react";
+import Layout from "@/components/Layout";
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
+import navimage from "../../public/images/navbarlogopng.png";
+import Image from "next/image";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import navimage from "../public/images/navbarlogopng.png";
-import Image from "next/image";
-import Link from "next/link";
-import { useSelector, useDispatch } from "react-redux";
-import { login } from "@/slices/authSlice";
-import { resetPasswordReset } from "@/slices/forgotPasswordSlice";
+import {
+  resetPassword,
+  resetPasswordRequestSuccess,
+  resetPasswordRequestFailure,
+  resetPasswordReset,
+} from "@/slices/forgotPasswordSlice";
+import { useDispatch, useSelector } from "react-redux";
 
-export default function Login() {
-  const [email, setEmail] = useState("");
+export default function index() {
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
 
-  const dispatch = useDispatch();
-
-  const user = useSelector((state) => state.auth.user);
   const isPasswordReset = useSelector(
     (state) => state.forgotPassword.isPasswordReset
   );
 
+  console.log(isPasswordReset);
+
   const router = useRouter();
+  const dispatch = useDispatch();
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    let credentials = {
-      email,
-      password,
-    };
+  const handleSubmit = async (event) => {
+    event.preventDefault();
 
-    dispatch(login(credentials));
+    if (password !== confirmPassword) {
+      toast.error("Passwords do not match");
+      return;
+    }
 
-    if (user && user.role === "mentor") {
-      router.push("/mentor");
-    } else {
-      router.push("/");
+    const { email, token } = router.query;
+
+    try {
+      dispatch(
+        resetPassword({
+          email,
+          token,
+          password,
+        })
+      );
+      dispatch(resetPasswordRequestSuccess());
+    } catch (error) {
+      dispatch(resetPasswordRequestFailure());
     }
   };
 
-  useEffect(() => {
-    if (isPasswordReset) {
-      toast.success("Password Reset Successfully");
-      dispatch(resetPasswordReset());
-    }
-  }, [isPasswordReset, dispatch]);
+  if (isPasswordReset) {
+    router.push("/login");
+  }
 
   return (
-    <div>
+    <Layout>
       <ToastContainer />
       <div className="flex flex-col items-center min-h-[80vh] pt-6 sm:justify-center sm:pt-0">
         <div>
@@ -61,25 +70,6 @@ export default function Login() {
           <form onSubmit={handleSubmit}>
             <div className="mt-4">
               <label
-                htmlFor="email"
-                className="block text-sm font-medium text-gray-700 undefined"
-              >
-                Email
-              </label>
-              <div className="flex flex-col items-start">
-                <input
-                  placeholder="Enter your email here..."
-                  type="email"
-                  name="email"
-                  onChange={(event) => {
-                    setEmail(event.target.value);
-                  }}
-                  className="block w-full px-4 py-2 mt-2 text-purple-700 bg-white border rounded-md focus:border-purple-400 focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40"
-                />
-              </div>
-            </div>
-            <div className="mt-4">
-              <label
                 htmlFor="password"
                 className="block text-sm font-medium text-gray-700 undefined"
               >
@@ -87,11 +77,30 @@ export default function Login() {
               </label>
               <div className="flex flex-col items-start">
                 <input
-                  placeholder="Enter your password here..."
+                  placeholder="Enter password here..."
                   type="password"
                   name="password"
                   onChange={(event) => {
                     setPassword(event.target.value);
+                  }}
+                  className="block w-full px-4 py-2 mt-2 text-purple-700 bg-white border rounded-md focus:border-purple-400 focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40"
+                />
+              </div>
+            </div>
+            <div className="mt-4">
+              <label
+                htmlFor="confirmPassword"
+                className="block text-sm font-medium text-gray-700 undefined"
+              >
+                Confirm Password
+              </label>
+              <div className="flex flex-col items-start">
+                <input
+                  placeholder="Enter password here..."
+                  type="password"
+                  name="confirmPassword"
+                  onChange={(event) => {
+                    setConfirmPassword(event.target.value);
                   }}
                   className="block w-full px-4 py-2 mt-2 text-purple-700 bg-white border rounded-md focus:border-purple-400 focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40"
                 />
@@ -102,29 +111,12 @@ export default function Login() {
                 type="submit"
                 className="inline-flex items-center px-4 py-2 ml-4 text-xs font-semibold tracking-widest text-white uppercase transition duration-150 ease-in-out bg-gray-900 border border-transparent rounded-md active:bg-gray-900 false"
               >
-                Login
+                Submit
               </button>
-            </div>
-            <div className="flex items-center justify-center mt-4">
-              <Link
-                className="text-sm text-gray-600 underline hover:text-gray-900"
-                href="/signup"
-              >
-                Don't have an account yet ?
-                <span className="text-blue-600">Sign Up</span>
-              </Link>
-            </div>
-            <div className="flex items-center justify-center mt-4">
-              <Link
-                href="/resetpassword"
-                className="list-none text-sm text-gray-600 underline hover:text-gray-900"
-              >
-                Forgot Password
-              </Link>
             </div>
           </form>
         </div>
       </div>
-    </div>
+    </Layout>
   );
 }
