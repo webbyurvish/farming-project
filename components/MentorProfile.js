@@ -1,10 +1,29 @@
-import React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import { BiMessageRoundedDetail } from "react-icons/bi";
 import { AiFillStar } from "react-icons/ai";
+import Link from "next/link";
+import Request from "./Request";
+import { Modal } from "@mui/material";
+import BasicModal from "./Modal";
+
+const style = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 400,
+  bgcolor: "background.paper",
+  border: "2px solid #000",
+  boxShadow: 24,
+  p: 4,
+};
 
 export default function MentorProfile({ mentor }) {
   console.log(mentor);
+
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => setOpen(true);
 
   if (typeof window === "undefined") {
     return <div>Loading...</div>;
@@ -14,6 +33,14 @@ export default function MentorProfile({ mentor }) {
     <>
       {mentor && (
         <div>
+          {/* <Modal
+            open={open}
+            onClose={handleClose}
+            aria-labelledby="modal-modal-title"
+            aria-describedby="modal-modal-description"
+          >
+            <Request />
+          </Modal> */}
           <div className="relative bg-indigo-950">
             <div className="max-w-screen-xl mx-auto">
               <div className="-mt-12 w-full lg:w-1/2 xl:w-2/3 px-4 pb-8 align-bottom flex items-end">
@@ -22,14 +49,6 @@ export default function MentorProfile({ mentor }) {
                     src={`https://localhost:7059${mentor.imageUrl}`}
                     alt="My Image"
                   />
-
-                  {/* <Image
-                    className="w-full h-full rounded-full"
-                    src={`${API_URL}${mentor.imageUrl}`}
-                    height={50}
-                    width={50}
-                    alt="Bonnie image"
-                  /> */}
                 </div>
                 <div className="hidden sm:inline-block ml-6 grow">
                   <div className="flex items-end gap-x-4">
@@ -385,14 +404,12 @@ export default function MentorProfile({ mentor }) {
                                   7 day free trial! Cancel anytime.
                                 </p>
                               </div>
-                              {/* <div className="mt-8 flex items-center">
-                                <Link
-                                  href={`/mentorscategory/${mentor.category.id}/${mentor.id}/chat`}
-                                  className="text-white w-full bg-teal-500 text-center rounded px-[6rem] py-3 hover:bg-teal-700 font-semibold duration-700"
-                                >
-                                  Communicate Now
-                                </Link>
-                              </div> */}
+
+                              <div className="mt-8 flex items-center">
+                                <button className="text-white w-full bg-teal-500 text-center rounded px-[6rem] py-3 hover:bg-teal-700 font-semibold duration-700">
+                                  <BasicModal />
+                                </button>
+                              </div>
                             </div>
                           </div>
                         </div>

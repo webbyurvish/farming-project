@@ -35,11 +35,7 @@ export function Header() {
 
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
   const user = useSelector((state) => state.auth.user);
-  const isLoading = useSelector((state) => state.auth.isLoading);
-
-  if (isLoading) {
-    return <div>Loading</div>;
-  }
+  // const isLoading = useSelector((state) => state.auth.isLoading);
 
   const handlelogout = () => {
     dispatch(logout());

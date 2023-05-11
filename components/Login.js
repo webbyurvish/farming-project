@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -8,6 +8,7 @@ import Link from "next/link";
 import { useSelector, useDispatch } from "react-redux";
 import { login } from "@/slices/authSlice";
 import { resetPasswordReset } from "@/slices/forgotPasswordSlice";
+import { resetError } from "@/slices/authSlice";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -16,6 +17,10 @@ export default function Login() {
   const dispatch = useDispatch();
 
   const user = useSelector((state) => state.auth.user);
+  const error = useSelector((state) => state.auth.error);
+
+  console.log(error);
+
   const isPasswordReset = useSelector(
     (state) => state.forgotPassword.isPasswordReset
   );
@@ -29,11 +34,18 @@ export default function Login() {
       password,
     };
 
-    dispatch(login(credentials));
+    try {
+      dispatch(login(credentials));
+      if (error) {
+        toast.error(error);
+      }
+    } catch (e) {
+      toast.error(e);
+    }
 
     if (user && user.role === "mentor") {
       router.push("/mentor");
-    } else {
+    } else if (user && user.role === "farmer") {
       router.push("/");
     }
   };
@@ -42,6 +54,7 @@ export default function Login() {
     if (isPasswordReset) {
       toast.success("Password Reset Successfully");
       dispatch(resetPasswordReset());
+      dispatch(resetError());
     }
   }, [isPasswordReset, dispatch]);
 

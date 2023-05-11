@@ -14,11 +14,14 @@ export default function Categories({ categories }) {
           categories.map((category) => {
             return (
               <>
-                <Link className=" transition ease-in-out hover:scale-110 duration-300 w-full" href={`/mentorscategory/${category.id}`}>
+                <Link
+                  className=" transition ease-in-out hover:scale-110 duration-300 w-full"
+                  href={`/mentorscategory/${category.id}`}
+                >
                   {/* <Paper elevation={3} className="m-5 relative transform hover:scale-110 hover:transition hover:duration-500 transform focus:scale-110 transition-all focus:transition focus:duration-500"> */}
                   <Paper elevation={3} className="m-0 w-full relative ">
                     <img
-                      src={`https://localhost:7059${category.imageUrl}`}
+                      src={`${API_URL}${category.imageUrl}`}
                       alt="category image"
                       className=" block w-full h-auto"
                     />
@@ -26,7 +29,6 @@ export default function Categories({ categories }) {
                       {category.name}
                     </span>
                   </Paper>
-
                 </Link>
               </>
             );

@@ -22,7 +22,7 @@ export async function getServerSideProps({ params }) {
   };
 
   const { data: mentor } = await axios.get(
-    `${API_URL}/api/mentor/${params.mentorId}`,
+    `${API_URL}/api/mentor/find/${params.mentorId}`,
     options
   );
 

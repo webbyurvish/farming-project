@@ -7,10 +7,12 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useSelector, useDispatch } from "react-redux";
 import { farmerActions } from "@/slices/farmerSlice";
+import { API_URL } from "@/config";
 
 export default function FarmerRegister() {
   const dispatch = useDispatch();
   const isFarmer = useSelector((state) => state.farmer.isFarmer);
+  const user = useSelector((state) => state.auth.user);
 
   const [selectedValue, setSelectedValue] = useState("Agriculture Expert");
 
@@ -25,67 +27,61 @@ export default function FarmerRegister() {
   const [crops, setCrops] = useState("");
   const [experience, setExperience] = useState("");
 
-  console.log(image)
+  console.log(image);
 
   const router = useRouter();
-
-
 
   const handleChange = (e) => {
     setSelectedValue(e.target.value);
   };
 
   const handleSubmit = async (e) => {
-
     e.preventDefault();
+
     const formData = new FormData();
     if (isFarmer) {
-      formData.append("Crops", crops);
       formData.append("FirstName", firstName);
       formData.append("LastName", lastName);
       formData.append("Email", email);
-      formData.append("PhoneNumber", phoneNumber);
-      formData.append("Description", description);
       formData.append("Password", password);
       formData.append("ConfirmPassword", confirmPassword);
+      formData.append("PhoneNumber", phoneNumber);
+      formData.append("Crops", crops);
+      formData.append("Description", description);
       formData.append("ImageFile", image);
     } else {
-      formData.append("CategoryId", selectedValue);
       formData.append("FirstName", firstName);
       formData.append("LastName", lastName);
       formData.append("Email", email);
-      formData.append("PhoneNumber", phoneNumber);
-      formData.append("Description", description);
       formData.append("Password", password);
       formData.append("ConfirmPassword", confirmPassword);
-      formData.append("Experience", experience);
+      formData.append("PhoneNumber", phoneNumber);
+      formData.append("Description", description);
       formData.append("ImageFile", image);
+      formData.append("CategoryId", selectedValue);
+      formData.append("Experience", experience);
     }
 
-    console.log(formData)
+    console.log(formData);
 
     let apiurl = isFarmer ? "farmer" : "mentor";
 
     try {
-      const response = await fetch(
-        `
-        https://localhost:7059/api/${apiurl}/register`,
-        {
-          method: "POST",
+      const response = await fetch(`${API_URL}/api/${apiurl}/register`, {
+        method: "POST",
+        body: formData,
+      });
 
-          body: formData,
-        }
-      );
       if (response.ok) {
         toast.success("Registration successfull!");
         e.target.reset();
-        router.push("/");
+        router.push("/ogin");
       } else {
         toast.error("Something Went Wrong");
       }
       console.log(response);
     } catch (e) {
-      toast.error("Something Went Wrong");
+      toast.error(e);
     }
   };
 
@@ -137,8 +133,7 @@ export default function FarmerRegister() {
                   name="firstname"
                   required
                   onChange={(event) => {
-                    setFirstName(event.target.value
-                    )
+                    setFirstName(event.target.value);
                   }}
                   className="block w-full px-4 py-2 mt-2 text-purple-700 bg-white border rounded-md focus:border-purple-400 focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40"
                 />
@@ -157,9 +152,9 @@ export default function FarmerRegister() {
                   name="lastname"
                   required
                   onChange={(event) => {
-                    setLastName(event.target.value
-                    )
-                  }} className="block w-full px-4 py-2 mt-2 text-purple-700 bg-white border rounded-md focus:border-purple-400 focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40"
+                    setLastName(event.target.value);
+                  }}
+                  className="block w-full px-4 py-2 mt-2 text-purple-700 bg-white border rounded-md focus:border-purple-400 focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40"
                 />
               </div>
             </div>
@@ -176,9 +171,9 @@ export default function FarmerRegister() {
                   name="email"
                   required
                   onChange={(event) => {
-                    setEmail(event.target.value
-                    )
-                  }} className="block w-full px-4 py-2 mt-2 text-purple-700 bg-white border rounded-md focus:border-purple-400 focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40"
+                    setEmail(event.target.value);
+                  }}
+                  className="block w-full px-4 py-2 mt-2 text-purple-700 bg-white border rounded-md focus:border-purple-400 focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40"
                 />
               </div>
             </div>
@@ -195,13 +190,13 @@ export default function FarmerRegister() {
                   name="phonenumber"
                   required
                   onChange={(event) => {
-                    setPhoneNumber(event.target.value
-                    )
-                  }} className="block w-full px-4 py-2 mt-2 text-purple-700 bg-white border rounded-md focus:border-purple-400 focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40"
+                    setPhoneNumber(event.target.value);
+                  }}
+                  className="block w-full px-4 py-2 mt-2 text-purple-700 bg-white border rounded-md focus:border-purple-400 focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40"
                 />
               </div>
             </div>
-            {isFarmer && (
+            {/* {isFarmer && (
               <div className="mt-4">
                 <label
                   htmlFor="lastname"
@@ -215,13 +210,13 @@ export default function FarmerRegister() {
                     name="lastname"
                     required
                     onChange={(event) => {
-                      setCrops(event.target.value
-                      )
-                    }} className="block w-full px-4 py-2 mt-2 text-purple-700 bg-white border rounded-md focus:border-purple-400 focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40"
+                      setCrops(event.target.value);
+                    }}
+                    className="block w-full px-4 py-2 mt-2 text-purple-700 bg-white border rounded-md focus:border-purple-400 focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40"
                   />
                 </div>
               </div>
-            )}
+            )} */}
             <div className="mt-4">
               <label
                 htmlFor="bio"
@@ -234,9 +229,9 @@ export default function FarmerRegister() {
                   type="text"
                   name="bio"
                   onChange={(event) => {
-                    setDescription(event.target.value
-                    )
-                  }} required
+                    setDescription(event.target.value);
+                  }}
+                  required
                   className="block w-full px-4 py-2 mt-2 text-purple-700 bg-white border rounded-md focus:border-purple-400 focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40"
                 ></textarea>
               </div>
@@ -296,9 +291,9 @@ export default function FarmerRegister() {
                       type="text"
                       name="lastname"
                       onChange={(event) => {
-                        setExperience(event.target.value
-                        )
-                      }} className="block w-full px-4 py-2 mt-2 text-purple-700 bg-white border rounded-md focus:border-purple-400 focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40"
+                        setExperience(event.target.value);
+                      }}
+                      className="block w-full px-4 py-2 mt-2 text-purple-700 bg-white border rounded-md focus:border-purple-400 focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40"
                     />
                   </div>
                 </div>
@@ -316,9 +311,9 @@ export default function FarmerRegister() {
                   type="password"
                   name="password"
                   onChange={(event) => {
-                    setPassword(event.target.value
-                    )
-                  }} className="block w-full px-4 py-2 mt-2 text-purple-700 bg-white border rounded-md focus:border-purple-400 focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40"
+                    setPassword(event.target.value);
+                  }}
+                  className="block w-full px-4 py-2 mt-2 text-purple-700 bg-white border rounded-md focus:border-purple-400 focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40"
                 />
               </div>
             </div>
@@ -334,9 +329,9 @@ export default function FarmerRegister() {
                   type="password"
                   name="password_confirmation"
                   onChange={(event) => {
-                    setConfirmPassword(event.target.value
-                    )
-                  }} className="block w-full px-4 py-2 mt-2 text-purple-700 bg-white border rounded-md focus:border-purple-400 focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40"
+                    setConfirmPassword(event.target.value);
+                  }}
+                  className="block w-full px-4 py-2 mt-2 text-purple-700 bg-white border rounded-md focus:border-purple-400 focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40"
                 />
               </div>
             </div>

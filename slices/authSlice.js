@@ -1,9 +1,14 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk, createAction } from "@reduxjs/toolkit";
+import { API_URL } from "@/config";
+
+export const resetError = () => ({
+  type: "auth/resetError",
+});
 
 export const login = createAsyncThunk(
   "auth/login",
   async ({ email, password }) => {
-    const response = await fetch("https://localhost:7059/api/user/login", {
+    const response = await fetch(`${API_URL}/api/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -52,11 +57,13 @@ export const authSlice = createSlice({
       state.token = null;
       state.isLoggedIn = false;
     },
+    resetError: (state) => {
+      state.error = null;
+    },
   },
   extraReducers: (builder) => {
     builder
       .addCase(login.pending, (state) => {
-        state.isLoading = true;
         state.error = null;
       })
       .addCase(login.fulfilled, (state, action) => {

@@ -31,7 +31,7 @@ export async function getServerSideProps({ params }) {
 
   // Fetch mentors for the category
   const { data: mentors } = await axios.get(
-    `${API_URL}/api/mentors/${categoryId}`,
+    `${API_URL}/api/mentor/${categoryId}`,
     options
   );
 
